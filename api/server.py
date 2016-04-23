@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, jsonify
+from flask import request, jsonify, url_for, redirect
 
 from api.config import app, URL_BASE
 from api.helpers import get_user_list, create_new_user, get_single_user, update_user, delete_user
@@ -8,7 +8,7 @@ from api.helpers import get_user_list, create_new_user, get_single_user, update_
 
 @app.route(URL_BASE + 'users', methods=['GET', 'POST'])
 def users():
-    """ Home endpoint"""
+    """ Users endpoint"""
     if request.method == "GET":
         users = get_user_list()
         if users:
@@ -25,7 +25,7 @@ def users():
 
 @app.route(URL_BASE + 'users/<username>', methods=['GET', 'POST', 'DELETE'])
 def single_user(username):
-    """ Home endpoint"""
+    """ Single user endpoint"""
     if request.method == "GET":
         user = get_single_user(username)
         if user:
@@ -36,6 +36,12 @@ def single_user(username):
         update_user(username, request.json)
     elif request.method == "DELETE":
         delete_user(username)
+
+
+@app.route('/')
+def home():
+    """ Home endpoint"""
+    return redirect(url_for("users"))
 
 
 if __name__ == "__main__":
