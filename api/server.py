@@ -14,24 +14,28 @@ def users():
         if users:
             return jsonify({"status": "ok", "data": users})
         else:
-            return {"response": "No users available"}
+            return jsonify({"response": "No users available"})
     elif request.method == "POST":
-        user = create_new_user()
+        user = create_new_user(request.json)
         if user:
             return jsonify({"status": "ok", "data": user})
+        else:
+            return jsonify({"response": "Unable to create user with data: {}".format(request.json)})
 
 
 @app.route(URL_BASE + 'users/<username>', methods=['GET', 'POST', 'DELETE'])
-def single_user():
+def single_user(username):
     """ Home endpoint"""
     if request.method == "GET":
-        get_single_user()
+        user = get_single_user(username)
+        if user:
+            return jsonify({"status": "ok", "data": user})
+        else:
+            return jsonify({"response": "Unable to retrieve user '{}'".format(username)})
     elif request.method == "PUT":
-        update_user()
+        update_user(username, request.json)
     elif request.method == "DELETE":
-        delete_user()
-
-    return "This is the index page"
+        delete_user(username)
 
 
 if __name__ == "__main__":
