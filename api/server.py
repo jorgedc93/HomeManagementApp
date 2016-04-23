@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, url_for, redirect, request, jsonify
-from flask_pymongo import PyMongo
+from flask import request, jsonify
 
+from api.config import app, URL_BASE
 from api.helpers import get_user_list, create_new_user, get_single_user, update_user, delete_user
-
-app = Flask("HomeManagementApp")
-app.config["MONGO_DBNAME"] = "students_db"
-mongo = PyMongo(app, config_prefix='MONGO')
-
-URL_BASE = '/api/v1/'
 
 
 @app.route(URL_BASE + 'users', methods=['GET', 'POST'])
