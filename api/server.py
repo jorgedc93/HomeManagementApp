@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, jsonify, url_for, redirect
+from flask import request, jsonify
 
 from api.config import app, URL_BASE
 from api.helpers import get_user_list, create_new_user, get_single_user, delete_user, update_total
 
 
-@app.route(URL_BASE + 'users', methods=['GET', 'POST'])
+@app.route(URL_BASE + 'users/', methods=['GET', 'POST'])
 def users():
     """ Users endpoint"""
     if request.method == "GET":
@@ -24,7 +24,7 @@ def users():
                            .format(request.json), "error": user})
 
 
-@app.route(URL_BASE + 'users/<username>', methods=['GET', 'PUT', 'DELETE'])
+@app.route(URL_BASE + 'users/<username>/', methods=['GET', 'PUT', 'DELETE'])
 def single_user(username):
     """ Single user endpoint"""
     if request.method == "GET":
@@ -42,14 +42,11 @@ def single_user(username):
             else:
                 return jsonify({"status": "error", "response": "Error updating user '{}'".format(username)})
     elif request.method == "DELETE":
-        delete_user(username)
-
-
-@app.route('/')
-def home():
-    """ Home endpoint"""
-    return redirect(url_for("users"))
-
+        deleted = delete_user(username)
+        if deleted:
+            return jsonify({"status": "ok", "response": "User '{}' deleted correctly".format(username)})
+        else:
+            return jsonify({"status": "error", "response": "Error deleting user '{}'".format(username)})
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')

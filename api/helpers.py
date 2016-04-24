@@ -38,7 +38,7 @@ def get_single_user(username):
 
 
 def update_total(username, new_total):
-    """ Updates the total for a user
+    """ Updates the total for a user in the DB
     :param username: username to updated
     :param new_total: new total to use
     :return:
@@ -52,7 +52,17 @@ def update_total(username, new_total):
 
 
 def delete_user(username):
-    pass
+    """ Deletes a user from the DB
+    :param username: username to be deleted
+    :return: True if the deletion is successful or False otherwise
+    """
+    result = mongo.db.users.delete_one({"username": username})
+    print(result.raw_result)
+    result = result.raw_result
+    if "ok" in result and result["ok"] == 1:
+        return True
+    else:
+        return False
 
 
 def validate_user(user):
