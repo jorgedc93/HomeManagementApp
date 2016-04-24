@@ -9,6 +9,7 @@ def get_user_list():
     """
     response = []
     for user in mongo.db.users.find():
+        user["_id"] = str(user["_id"])
         response.append(user)
     return response
 
@@ -18,12 +19,12 @@ def create_new_user(data):
     :param data: dict containing the information for the new user
     :return: created user object or None if there was information missing
     """
-    if validate_user(data):
-        data["_id"] = data["username"]
+    status, error = validate_user(data)
+    if status:
         user = mongo.db.users.insert(data)
-        return user
+        return True, str(user)
     else:
-        return None
+        return False, error
 
 
 def get_single_user(username):
@@ -32,6 +33,7 @@ def get_single_user(username):
     :return: user object or None if the user does not exist
     """
     user = mongo.db.users.find_one({"username": username})
+    user["_id"] = str(user["_id"])
     return user
 
 
@@ -49,15 +51,14 @@ def validate_user(user):
     :return: True if the user is valid, False otherwise
     """
     username = user.get("username")
-    if not username:
-        return False
+    if username is None:
+        return False, "Username field not available"
 
     total = user.get("total")
-
-    if not total:
-        return False
+    if total is None:
+        return False, "Total field not available"
 
     if mongo.db.users.find_one({"username": username}):
-        return False
+        return False, "User already exists"
 
-    return True
+    return True, "Successful"

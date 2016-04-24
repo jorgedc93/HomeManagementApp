@@ -16,14 +16,14 @@ def users():
         else:
             return jsonify({"response": "No users available"})
     elif request.method == "POST":
-        user = create_new_user(request.json)
-        if user:
+        status, user = create_new_user(request.json)
+        if status:
             return jsonify({"status": "ok", "data": user})
         else:
-            return jsonify({"response": "Unable to create user with data: {}".format(request.json)})
+            return jsonify({"response": "Unable to create user with data: {}".format(request.json), "error": user})
 
 
-@app.route(URL_BASE + 'users/<username>', methods=['GET', 'POST', 'DELETE'])
+@app.route(URL_BASE + 'users/<username>', methods=['GET', 'PUT', 'DELETE'])
 def single_user(username):
     """ Single user endpoint"""
     if request.method == "GET":
