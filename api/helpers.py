@@ -37,8 +37,18 @@ def get_single_user(username):
     return user
 
 
-def update_user(username, data):
-    pass
+def update_total(username, new_total):
+    """ Updates the total for a user
+    :param username: username to updated
+    :param new_total: new total to use
+    :return:
+    """
+    result = mongo.db.users.update_one({"username": username}, {'$set': {'total': new_total}})
+    result = result.raw_result
+    if "ok" in result and result["ok"] == 1:
+        return True
+    else:
+        return False
 
 
 def delete_user(username):
