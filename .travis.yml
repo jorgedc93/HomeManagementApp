@@ -6,7 +6,9 @@ install:
   - "pip install -r api/requirements.txt"
   - "pip install coveralls"
 # command to run tests
+env:
+  - PYTHONPATH=.
 script:
-  - coverage run --source=api/ api/test_helpers.py
+  - coverage run --source=api/ api/test_helpers.py && echo PYTHONPATH
 after_success:
   - coveralls
