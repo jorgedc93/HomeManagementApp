@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from config import mongo
+from config import (mongo, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
+                    USER_ALREADY_EXISTS)
 
 
 def get_user_list():
@@ -72,13 +73,13 @@ def validate_user(user):
     """
     username = user.get("username")
     if username is None:
-        return False, "Username field not available"
+        return False, USERNAME_NOT_AVAILABLE
 
     total = user.get("total")
     if total is None:
-        return False, "Total field not available"
+        return False, TOTAL_NOT_AVAILABLE
 
     if mongo.db.users.find_one({"username": username}):
-        return False, "User already exists"
+        return False, USER_ALREADY_EXISTS
 
-    return True, "Successful"
+    return True, SUCCESSFUL_VALIDATION_MESSAGE

@@ -6,7 +6,8 @@ import unittest
 from unittest.mock import patch
 
 import helpers
-from config import app
+from config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
+                    USER_ALREADY_EXISTS)
 
 
 def random_string(length=10, chars=string.ascii_letters):
@@ -59,6 +60,51 @@ class TestHelpers(unittest.TestCase):
         # And we assert that the users are the same
         for user in response_users:
             self.assertIn(user, random_users)
+
+    def test_validate_valid_user(self, mock_mongo):
+        """ Test that a valid user returns True and Successful"""
+
+        user = generate_random_users(1)[0]
+        mock_mongo.db.users.find_one.return_value = None
+
+        valid, message = helpers.validate_user(user)
+
+        self.assertTrue(valid)
+        self.assertEqual(message, SUCCESSFUL_VALIDATION_MESSAGE)
+
+    def test_validate_user_without_username(self, mock_mongo):
+        """ Test that a user without username returns False and a correct message"""
+
+        user = generate_random_users(1)[0]
+        del user["username"]
+
+        valid, message = helpers.validate_user(user)
+
+        self.assertFalse(valid)
+        self.assertEqual(message, USERNAME_NOT_AVAILABLE)
+
+    def test_validate_user_without_total(self, mock_mongo):
+        """ Test that a user without total returns False and a correct message"""
+
+        user = generate_random_users(1)[0]
+        del user["total"]
+
+        valid, message = helpers.validate_user(user)
+
+        self.assertFalse(valid)
+        self.assertEqual(message, TOTAL_NOT_AVAILABLE)
+
+    def test_validate_user_already_exists(self, mock_mongo):
+        """ Test that a user that already exists returns False and a correct message"""
+
+        user = generate_random_users(1)[0]
+        mock_mongo.db.users.find_one.return_value = user
+
+        valid, message = helpers.validate_user(user)
+
+        self.assertFalse(valid)
+        self.assertEqual(message, USER_ALREADY_EXISTS)
+
 
 if __name__ == "__main__":
     unittest.main()
