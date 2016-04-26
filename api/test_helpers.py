@@ -5,8 +5,8 @@ import string
 import unittest
 from unittest.mock import patch
 
-from api import helpers
-from api.config import app
+import helpers
+from config import app
 
 
 def random_string(length=10, chars=string.ascii_letters):
@@ -34,7 +34,7 @@ def generate_random_users(num):
     return users
 
 
-@patch("api.helpers.mongo")
+@patch("helpers.mongo")
 class TestHelpers(unittest.TestCase):
 
     def setUp(self):

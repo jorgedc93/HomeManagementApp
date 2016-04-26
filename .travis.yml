@@ -9,6 +9,6 @@ install:
 env:
   - PYTHONPATH=.
 script:
-  - coverage run --source=api/ api/test_helpers.py && echo PYTHONPATH
+  - coverage run --source=api/ api/test_helpers.py
 after_success:
   - coveralls

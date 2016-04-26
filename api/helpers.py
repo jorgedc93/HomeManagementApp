@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from api.config import mongo
+from config import mongo
 
 
 def get_user_list():
