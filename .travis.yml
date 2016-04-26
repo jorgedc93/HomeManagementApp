@@ -2,6 +2,11 @@ language: python
 python:
   - "3.5"
 # command to install dependencies
-install: "pip install -r api/requirements.txt"
+install:
+  - "pip install -r api/requirements.txt"
+  - "pip install coveralls"
 # command to run tests
-script: nosetests -sv api
+script:
+  - coverage run --source=api/ api/test_helpers.py
+after_success:
+  - coveralls
