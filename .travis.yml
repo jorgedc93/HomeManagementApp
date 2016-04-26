@@ -1,7 +1,7 @@
 language: python
 python:
   - "3.5"
-# command to install dependencies
+# pip install dependencies
 install:
   - "pip install -r api/requirements.txt"
   - "pip install coveralls"
