@@ -3,7 +3,7 @@
 import random
 import string
 import unittest
-from unittest.mock import patch, Mock, PropertyMock
+from unittest.mock import patch
 
 import helpers
 from config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
@@ -40,7 +40,6 @@ def generate_random_user():
     :return: a rando valid user
     """
     return generate_random_users(1)[0]
-
 
 
 @patch("helpers.mongo")
@@ -158,7 +157,7 @@ class TestHelpers(unittest.TestCase):
         self.assertFalse(deleted)
 
     def test_validate_valid_user(self, mock_mongo):
-        """ Test that a valid user returns True and Successful"""
+        """ Test that a valid user returns True and Successful """
 
         user = generate_random_users(1)[0]
         mock_mongo.db.users.find_one.return_value = None
@@ -169,7 +168,7 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(message, SUCCESSFUL_VALIDATION_MESSAGE)
 
     def test_validate_user_without_username(self, mock_mongo):
-        """ Test that a user without username returns False and a correct message"""
+        """ Test that a user without username returns False and a correct message """
 
         user = generate_random_users(1)[0]
         del user["username"]
@@ -180,7 +179,7 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(message, USERNAME_NOT_AVAILABLE)
 
     def test_validate_user_without_total(self, mock_mongo):
-        """ Test that a user without total returns False and a correct message"""
+        """ Test that a user without total returns False and a correct message """
 
         user = generate_random_users(1)[0]
         del user["total"]
@@ -191,7 +190,7 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(message, TOTAL_NOT_AVAILABLE)
 
     def test_validate_user_already_exists(self, mock_mongo):
-        """ Test that a user that already exists returns False and a correct message"""
+        """ Test that a user that already exists returns False and a correct message """
 
         user = generate_random_users(1)[0]
         mock_mongo.db.users.find_one.return_value = user
