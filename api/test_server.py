@@ -7,9 +7,9 @@ import ujson
 
 from mock import patch
 
-from config import URL_BASE
-import server
-from test_utils import generate_random_user, generate_random_users
+from api.config import URL_BASE
+from api import server
+from api.test_utils import generate_random_user, generate_random_users
 
 
 class ServerTestCase(unittest.TestCase):

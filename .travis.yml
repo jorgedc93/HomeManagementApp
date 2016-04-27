@@ -9,6 +9,6 @@ install:
 env:
   - PYTHONPATH=.
 script:
-  - coverage run --source=api/ api/test_helpers.py
+  - nosetests -sv --with-coverage --cover-package=.
 after_success:
   - coveralls

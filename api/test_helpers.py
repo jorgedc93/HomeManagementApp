@@ -4,13 +4,13 @@ import random
 import unittest
 from unittest.mock import patch
 
-import helpers
-from config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
+from api import helpers
+from api.config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
                     USER_ALREADY_EXISTS)
-from test_utils import generate_random_user, generate_random_users
+from api.test_utils import generate_random_user, generate_random_users
 
 
-@patch("helpers.mongo")
+@patch("api.helpers.mongo")
 class TestHelpers(unittest.TestCase):
 
     def setUp(self):
