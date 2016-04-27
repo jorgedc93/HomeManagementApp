@@ -58,7 +58,6 @@ def delete_user(username):
     :return: True if the deletion is successful or False otherwise
     """
     result = mongo.db.users.delete_one({"username": username})
-    print(result.raw_result)
     result = result.raw_result
     if "ok" in result and result["ok"] == 1:
         return True

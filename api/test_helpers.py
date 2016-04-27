@@ -3,7 +3,7 @@
 import random
 import string
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock, PropertyMock
 
 import helpers
 from config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
@@ -35,6 +35,14 @@ def generate_random_users(num):
     return users
 
 
+def generate_random_user():
+    """ Generates one valid random user
+    :return: a rando valid user
+    """
+    return generate_random_users(1)[0]
+
+
+
 @patch("helpers.mongo")
 class TestHelpers(unittest.TestCase):
 
@@ -60,6 +68,94 @@ class TestHelpers(unittest.TestCase):
         # And we assert that the users are the same
         for user in response_users:
             self.assertIn(user, random_users)
+
+    def test_create_new_user_successful(self, mock_mongo):
+        """ Test that creating a user works as expected if the user is valid """
+
+        random_user = generate_random_user()
+        str_random_user = str(random_user)
+        mock_mongo.db.users.insert.return_value = random_user
+
+        with patch.object(helpers, "validate_user", return_value=(True, "")):
+            created, result = helpers.create_new_user(random_user)
+
+        self.assertTrue(created)
+        self.assertEqual(result, str_random_user)
+
+    def test_create_new_user_error(self, mock_mongo):
+        """ Test that creating a user returns an error if the user is not valid """
+
+        random_user = generate_random_user()
+        err_msg = "I'm an error message"
+        mock_mongo.db.users.insert.return_value = random_user
+
+        with patch.object(helpers, "validate_user", return_value=(False, err_msg)):
+            created, result = helpers.create_new_user(random_user)
+
+        self.assertFalse(created)
+        self.assertEqual(result, err_msg)
+
+    def test_get_single_user(self, mock_mongo):
+        """ Test that a single user can be retrieved by its username """
+
+        random_user = generate_random_user()
+        mock_mongo.db.users.find_one.return_value = random_user
+
+        result = helpers.get_single_user(random_user["username"])
+
+        self.assertEqual(result, random_user)
+        self.assertEqual(mock_mongo.db.users.find_one.call_args[0][0], {"username": random_user["username"]})
+
+    def test_update_total_successful(self, mock_mongo):
+        """ Test that a user can be updated with a new total value """
+
+        random_user = generate_random_user()
+        random_total = random.randint(5, 100)
+        update_ok_result_dict = {"ok": 1}
+
+        mock_mongo.db.users.update_one.return_value.raw_result = update_ok_result_dict
+        update_param_dict = {"username": random_user["username"]}, {'$set': {'total': random_total}}
+
+        updated = helpers.update_total(random_user["username"], random_total)
+
+        self.assertTrue(updated)
+        self.assertEqual(mock_mongo.db.users.update_one.call_args[0], update_param_dict)
+
+    def test_update_total_error(self, mock_mongo):
+        """ Test that an error is properly handled when the update does not work as expected """
+
+        random_user = generate_random_user()
+        random_total = random.randint(5, 100)
+        update_error_raw_result = {"ok": 0}
+
+        mock_mongo.db.users.update_one.return_value.raw_result = update_error_raw_result
+
+        updated = helpers.update_total(random_user["username"], random_total)
+
+        self.assertFalse(updated)
+
+    def test_delete_user_correct(self, mock_mongo):
+        """ Test that a correct deletion works as expected """
+
+        random_user = generate_random_user()
+        delete_ok_raw_result = {"ok": 1}
+        mock_mongo.db.users.delete_one.return_value.raw_result = delete_ok_raw_result
+
+        deleted = helpers.delete_user(random_user["username"])
+
+        self.assertTrue(deleted)
+        self.assertEqual(mock_mongo.db.users.delete_one.call_args[0][0], {"username": random_user["username"]})
+
+    def test_delete_user_error(self, mock_mongo):
+        """ Test that an error when deleting a user is handled correctly """
+
+        random_user = generate_random_user()
+        delete_error_raw_result = {"ok": 0}
+        mock_mongo.db.users.delete_one.return_value.raw_result = delete_error_raw_result
+
+        deleted = helpers.delete_user(random_user["username"])
+
+        self.assertFalse(deleted)
 
     def test_validate_valid_user(self, mock_mongo):
         """ Test that a valid user returns True and Successful"""
