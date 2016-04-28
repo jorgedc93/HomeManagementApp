@@ -83,11 +83,7 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn("error", response_dict)
         self.assertEqual(response_dict["error"], err_msg)
 
-        response_msg = "Unable to create user with data: {}".format(random_user)
         self.assertIn("response", response_dict)
-        self.assertEqual(response_dict["response"], response_msg)
-
-
 
 if __name__ == '__main__':
     unittest.main()
