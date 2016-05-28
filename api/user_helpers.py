@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from api.config import (mongo, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
-                    USER_ALREADY_EXISTS)
+                        USER_ALREADY_EXISTS)
 
 
 def get_user_list():

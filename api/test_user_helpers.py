@@ -4,14 +4,14 @@ import random
 import unittest
 from unittest.mock import patch
 
-from api import helpers
+from api import user_helpers
 from api.config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
-                    USER_ALREADY_EXISTS)
+                        USER_ALREADY_EXISTS)
 from api.test_utils import generate_random_user, generate_random_users
 
 
-@patch("api.helpers.mongo")
-class TestHelpers(unittest.TestCase):
+@patch("api.user_helpers.mongo")
+class TestUserHelpers(unittest.TestCase):
 
     def setUp(self):
         self.app_context = app.app_context()
@@ -27,7 +27,7 @@ class TestHelpers(unittest.TestCase):
 
         mock_mongo.db.users.find.return_value = random_users
 
-        response_users = helpers.get_user_list()
+        response_users = user_helpers.get_user_list()
 
         # We assert that it returns the expected number of users
         self.assertEqual(len(random_users), len(response_users))
@@ -43,8 +43,8 @@ class TestHelpers(unittest.TestCase):
         str_random_user = str(random_user)
         mock_mongo.db.users.insert.return_value = random_user
 
-        with patch.object(helpers, "validate_user", return_value=(True, "")):
-            created, result = helpers.create_new_user(random_user)
+        with patch.object(user_helpers, "validate_user", return_value=(True, "")):
+            created, result = user_helpers.create_new_user(random_user)
 
         self.assertTrue(created)
         self.assertEqual(result, str_random_user)
@@ -56,8 +56,8 @@ class TestHelpers(unittest.TestCase):
         err_msg = "I'm an error message"
         mock_mongo.db.users.insert.return_value = random_user
 
-        with patch.object(helpers, "validate_user", return_value=(False, err_msg)):
-            created, result = helpers.create_new_user(random_user)
+        with patch.object(user_helpers, "validate_user", return_value=(False, err_msg)):
+            created, result = user_helpers.create_new_user(random_user)
 
         self.assertFalse(created)
         self.assertEqual(result, err_msg)
@@ -68,7 +68,7 @@ class TestHelpers(unittest.TestCase):
         random_user = generate_random_user()
         mock_mongo.db.users.find_one.return_value = random_user
 
-        result = helpers.get_single_user(random_user["username"])
+        result = user_helpers.get_single_user(random_user["username"])
 
         self.assertEqual(result, random_user)
         self.assertEqual(mock_mongo.db.users.find_one.call_args[0][0], {"username": random_user["username"]})
@@ -83,7 +83,7 @@ class TestHelpers(unittest.TestCase):
         mock_mongo.db.users.update_one.return_value.raw_result = update_ok_result_dict
         update_param_dict = {"username": random_user["username"]}, {'$set': {'total': random_total}}
 
-        updated = helpers.update_total(random_user["username"], random_total)
+        updated = user_helpers.update_total(random_user["username"], random_total)
 
         self.assertTrue(updated)
         self.assertEqual(mock_mongo.db.users.update_one.call_args[0], update_param_dict)
@@ -97,7 +97,7 @@ class TestHelpers(unittest.TestCase):
 
         mock_mongo.db.users.update_one.return_value.raw_result = update_error_raw_result
 
-        updated = helpers.update_total(random_user["username"], random_total)
+        updated = user_helpers.update_total(random_user["username"], random_total)
 
         self.assertFalse(updated)
 
@@ -108,7 +108,7 @@ class TestHelpers(unittest.TestCase):
         delete_ok_raw_result = {"ok": 1}
         mock_mongo.db.users.delete_one.return_value.raw_result = delete_ok_raw_result
 
-        deleted = helpers.delete_user(random_user["username"])
+        deleted = user_helpers.delete_user(random_user["username"])
 
         self.assertTrue(deleted)
         self.assertEqual(mock_mongo.db.users.delete_one.call_args[0][0], {"username": random_user["username"]})
@@ -120,7 +120,7 @@ class TestHelpers(unittest.TestCase):
         delete_error_raw_result = {"ok": 0}
         mock_mongo.db.users.delete_one.return_value.raw_result = delete_error_raw_result
 
-        deleted = helpers.delete_user(random_user["username"])
+        deleted = user_helpers.delete_user(random_user["username"])
 
         self.assertFalse(deleted)
 
@@ -130,7 +130,7 @@ class TestHelpers(unittest.TestCase):
         user = generate_random_users(1)[0]
         mock_mongo.db.users.find_one.return_value = None
 
-        valid, message = helpers.validate_user(user)
+        valid, message = user_helpers.validate_user(user)
 
         self.assertTrue(valid)
         self.assertEqual(message, SUCCESSFUL_VALIDATION_MESSAGE)
@@ -141,7 +141,7 @@ class TestHelpers(unittest.TestCase):
         user = generate_random_users(1)[0]
         del user["username"]
 
-        valid, message = helpers.validate_user(user)
+        valid, message = user_helpers.validate_user(user)
 
         self.assertFalse(valid)
         self.assertEqual(message, USERNAME_NOT_AVAILABLE)
@@ -152,7 +152,7 @@ class TestHelpers(unittest.TestCase):
         user = generate_random_users(1)[0]
         del user["total"]
 
-        valid, message = helpers.validate_user(user)
+        valid, message = user_helpers.validate_user(user)
 
         self.assertFalse(valid)
         self.assertEqual(message, TOTAL_NOT_AVAILABLE)
@@ -163,7 +163,7 @@ class TestHelpers(unittest.TestCase):
         user = generate_random_users(1)[0]
         mock_mongo.db.users.find_one.return_value = user
 
-        valid, message = helpers.validate_user(user)
+        valid, message = user_helpers.validate_user(user)
 
         self.assertFalse(valid)
         self.assertEqual(message, USER_ALREADY_EXISTS)

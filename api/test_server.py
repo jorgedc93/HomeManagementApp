@@ -5,7 +5,7 @@ import tempfile
 import unittest
 import ujson
 
-from mock import patch
+from unittest.mock import patch
 
 from api.config import URL_BASE
 from api import server
@@ -47,8 +47,8 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn("status", response_dict)
         self.assertEqual(response_dict["status"], "error")
 
-        self.assertIn("response", response_dict)
-        self.assertEqual(response_dict["response"], "No users available")
+        self.assertIn("message", response_dict)
+        self.assertEqual(response_dict["message"], "No users available")
 
     def test_post_create_user(self):
         """ Test that a successful POST creates a user """
@@ -83,7 +83,7 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn("error", response_dict)
         self.assertEqual(response_dict["error"], err_msg)
 
-        self.assertIn("response", response_dict)
+        self.assertIn("message", response_dict)
 
     def test_get_single_user_enpoint(self):
         """ Test that a correct GET with a username returns the user """
@@ -113,8 +113,8 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn("status", response_dict)
         self.assertEqual(response_dict["status"], "error")
 
-        self.assertIn("response", response_dict)
-        self.assertEqual(response_dict["response"], "Unable to retrieve user '{}'".format(random_user["username"]))
+        self.assertIn("message", response_dict)
+        self.assertEqual(response_dict["message"], "Unable to retrieve user '{}'".format(random_user["username"]))
 
     def test_put_update_total_endpoint(self):
         """ Test that a PUT request with a new total updates the user """
@@ -135,8 +135,8 @@ class ServerTestCase(unittest.TestCase):
 
         response_message = "User '{}' updated correctly with new total: {}".format(random_user["username"],
                                                                                    new_total)
-        self.assertIn("response", response_dict)
-        self.assertEqual(response_dict["response"], response_message)
+        self.assertIn("message", response_dict)
+        self.assertEqual(response_dict["message"], response_message)
 
     def test_error_put_update_total_endpoint(self):
         """ Test that a PUT request with a new total updates the user """
@@ -156,8 +156,8 @@ class ServerTestCase(unittest.TestCase):
         self.assertEqual(response_dict["status"], "error")
 
         response_message = "Error updating user '{}'".format(random_user["username"])
-        self.assertIn("response", response_dict)
-        self.assertEqual(response_dict["response"], response_message)
+        self.assertIn("message", response_dict)
+        self.assertEqual(response_dict["message"], response_message)
 
     def test_delete_user_endpoint(self):
         """ Test that a DELETE request removes the user """
@@ -176,8 +176,8 @@ class ServerTestCase(unittest.TestCase):
 
         response_message = "User '{}' deleted correctly".format(random_user["username"])
 
-        self.assertIn("response", response_dict)
-        self.assertEqual(response_dict["response"], response_message)
+        self.assertIn("message", response_dict)
+        self.assertEqual(response_dict["message"], response_message)
 
     def test_error_delete_user_endpoint(self):
         """ Test that a wrong DELETE request returns an error """
@@ -196,8 +196,8 @@ class ServerTestCase(unittest.TestCase):
 
         response_message = "Error deleting user '{}'".format(random_user["username"])
 
-        self.assertIn("response", response_dict)
-        self.assertEqual(response_dict["response"], response_message)
+        self.assertIn("message", response_dict)
+        self.assertEqual(response_dict["message"], response_message)
 
 if __name__ == '__main__':
     unittest.main()
