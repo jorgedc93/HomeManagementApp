@@ -29,6 +29,15 @@ def generate_random_users(num):
     return users
 
 
+def generate_random_flat():
+    flat = {
+        "flatname": random_string(),
+        "flat_members": ["dafuq"],
+        "shopping_list": ["beer"]
+    }
+    return flat
+
+
 def generate_random_user():
     """ Generates one valid random user
     :return: a rando valid user
