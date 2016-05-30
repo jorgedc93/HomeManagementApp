@@ -3,7 +3,7 @@
 
 import telepot
 
-from flat.config import bot_cfg
+from bot.flat.config import bot_cfg
 
 ENDPOINT = "http://192.168.1.232:5000/api/v1/users/"
 

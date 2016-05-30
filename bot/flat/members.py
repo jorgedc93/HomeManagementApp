@@ -1,7 +1,8 @@
 # coding=utf-8
 #
 
-from flat.api_actions import get_users_from_api_endpoint
+from bot.flat.api_actions import get_users_from_api_endpoint
+
 
 class Member(object):
 
@@ -14,6 +15,7 @@ class Member(object):
             "name": self.name,
             "total": self.total
         }
+
 
 def get_members(home):
     user_list = get_users_from_api_endpoint(home)

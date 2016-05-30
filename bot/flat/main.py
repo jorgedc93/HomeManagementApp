@@ -5,13 +5,13 @@
 import telepot
 import time
 
-from flat.home_bot import HomeBot
-from flat.config import procenca56
-from flat.react import check_text_for_command_and_execute, display_status
+from bot.flat.home_bot import HomeBot
+from bot.flat.config import provenca56
+from bot.flat.react import check_text_for_command_and_execute, display_status
 
 
 def authorised(content_type, chat_id):
-        return content_type == "text" and chat_id in procenca56.keys()
+        return content_type == "text" and chat_id in provenca56.keys()
 
 
 def run():
@@ -26,7 +26,6 @@ def react_on_message(message):
     if authorised(content_type, chat_id):
         check_text_for_command_and_execute(home, message)
         display_status(home, chat_id)
-
 
 
 if __name__ == '__main__':

@@ -3,11 +3,11 @@
 
 import requests
 
-from flat.config import procenca56
+from bot.flat.config import provenca56
 
 
 def update_total(home, amount, chat_id):
-    url = home.endpoint + procenca56[chat_id] + "/"
+    url = home.endpoint + provenca56[chat_id] + "/"
     response = requests.get(url)
     user = response.json()['data']
     user["total"] += amount
