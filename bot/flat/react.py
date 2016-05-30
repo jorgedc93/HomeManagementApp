@@ -35,6 +35,6 @@ def display_status(home, chat_id):
     member_list = get_members(home)
     response = ["Balance :\n\n"]
     for member in member_list:
-        response.append(member["name"].capitalize() + ": " + str(member["total"]) + "€ \n")
+        response.append(member["name"].capitalize() + ": " + str(round(member["total"], 2)) + "€ \n")
     response_text = "".join(response)
     home.bot.sendMessage(chat_id, response_text)
