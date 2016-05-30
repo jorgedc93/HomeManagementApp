@@ -15,13 +15,16 @@ def check_text_for_command_and_execute(home, message):
     content_type, chat_type, chat_id = telepot.glance(message)
     try:
         command_value = message["text"].split(" ")
-        if len(command_value) != 2 or command_value[0].lower() not in ALLOWED_COMMANDS:
-            raise()
-        if command_value[0].lower() == COMMAND_PUT:
-            if isinstance(command_value[1], str):
-                value = int(command_value[1])
-                update_total(home, value, chat_id)
-        if command_value[0].lower() == COMMAND_LIST:
+        command = command_value[0].lower()
+        if command not in ALLOWED_COMMANDS:
+            raise Exception()
+        if command == COMMAND_PUT:
+            if len(command_value) != 2:
+                home.bot.sendMessage(chat_id, "Missing the numeric value to add to your balance")
+            value = float(command_value[1])
+            update_total(home, value, chat_id)
+            display_status(home, chat_id)
+        if command == COMMAND_LIST:
             display_status(home, chat_id)
     except:
         home.bot.sendMessage(chat_id, "I am a very simple bot at the Moment. Please write 'put 5' if you "
@@ -30,8 +33,8 @@ def check_text_for_command_and_execute(home, message):
 
 def display_status(home, chat_id):
     member_list = get_members(home)
-    response = ["Balance :\n"]
+    response = ["Balance :\n\n"]
     for member in member_list:
-        response.append(member["name"] + " :" + str(member["total"]) + "\n")
+        response.append(member["name"].capitalize() + ": " + str(member["total"]) + "€ \n")
     response_text = "".join(response)
     home.bot.sendMessage(chat_id, response_text)

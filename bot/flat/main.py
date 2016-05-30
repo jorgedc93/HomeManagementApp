@@ -25,7 +25,6 @@ def react_on_message(message):
     content_type, chat_type, chat_id = telepot.glance(message)
     if authorised(content_type, chat_id):
         check_text_for_command_and_execute(home, message)
-        display_status(home, chat_id)
 
 
 if __name__ == '__main__':
