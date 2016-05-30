@@ -7,8 +7,9 @@ from bot.flat.api_actions import update_total
 
 COMMAND_PUT = 'put'
 COMMAND_LIST = 'list'
+COMMAND_HELP = 'help'
 
-ALLOWED_COMMANDS = [COMMAND_PUT, COMMAND_LIST]
+ALLOWED_COMMANDS = [COMMAND_PUT, COMMAND_LIST, COMMAND_HELP]
 
 
 def check_text_for_command_and_execute(home, message):
@@ -26,9 +27,10 @@ def check_text_for_command_and_execute(home, message):
             display_status(home, chat_id)
         if command == COMMAND_LIST:
             display_status(home, chat_id)
+        if command == COMMAND_HELP:
+            show_help_message(home, chat_id)
     except:
-        home.bot.sendMessage(chat_id, "I am a very simple bot at the Moment. Please write 'put 5' if you "
-                                      "want to add 5 euros")
+        home.bot.sendMessage(chat_id, "Sorry, I could not understand your command")
 
 
 def display_status(home, chat_id):
@@ -38,3 +40,9 @@ def display_status(home, chat_id):
         response.append(member["name"].capitalize() + ": " + str(round(member["total"], 2)) + "€ \n")
     response_text = "".join(response)
     home.bot.sendMessage(chat_id, response_text)
+
+
+def show_help_message(home, chat_id):
+    message = ("Available commands:\n\n\t\t1 - Put n: Adds n euros to your balance\n\t\t"
+               "2 - List: Lists the balance for all the people in the flat")
+    home.bot.sendMessage(chat_id, message)
