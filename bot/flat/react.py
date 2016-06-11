@@ -29,15 +29,22 @@ def check_text_for_command_and_execute(home, message):
             display_status(home, chat_id)
         if command == COMMAND_HELP:
             show_help_message(home, chat_id)
-    except:
+    except Exception as e:
+        print(e)
         home.bot.sendMessage(chat_id, "Sorry, I could not understand your command")
 
 
 def display_status(home, chat_id):
     member_list = get_members(home)
+    maximum_total_member = max(member_list, key=lambda x: x.get('total'))
     response = ["Balance :\n\n"]
     for member in member_list:
-        response.append(member["name"].capitalize() + ": " + str(round(member["total"], 2)) + "€ \n")
+        if member == maximum_total_member:
+            response.append(member["name"].capitalize() + ": " + str(round(member["total"], 2)) + "€ \n")
+        else:
+            difference_max = member["total"] - maximum_total_member["total"]
+            response.append(member["name"].capitalize() + ": " + str(round(member["total"], 2)) + "€\t(" +
+                            str(round(difference_max, 2)) + "€) \n")
     response_text = "".join(response)
     home.bot.sendMessage(chat_id, response_text)
 
