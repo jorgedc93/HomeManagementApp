@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 
 from api import user_helpers
-from api.config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
+from api.config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, NAME_NOT_AVAILABLE,
                         USER_ALREADY_EXISTS)
 from api.test_utils import generate_random_user, generate_random_users
 
@@ -144,7 +144,7 @@ class TestUserHelpers(unittest.TestCase):
         valid, message = user_helpers.validate_user(user)
 
         self.assertFalse(valid)
-        self.assertEqual(message, USERNAME_NOT_AVAILABLE)
+        self.assertEqual(message, NAME_NOT_AVAILABLE)
 
     def test_validate_user_without_total(self, mock_mongo):
         """ Test that a user without total returns False and a correct message """
