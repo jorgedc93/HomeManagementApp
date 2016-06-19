@@ -3,7 +3,7 @@
 import requests
 from unittest import TestCase
 
-from api.test_utils import generate_random_flat, generate_random_user
+from api.test_utils import generate_random_flat
 
 class ApiReadWrite(TestCase):
     """ DANGER! these tests will happily litter your DB

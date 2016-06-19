@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from bson.objectid import ObjectId
 
-from api.config import (mongo, SUCCESSFUL_VALIDATION_MESSAGE, USERNAME_NOT_AVAILABLE, AMOUNT_NOT_AVAILABLE,
-                        DATE_NOT_AVAILABLE)
+from api.config import (mongo, SUCCESSFUL_VALIDATION_MESSAGE, AMOUNT_NOT_AVAILABLE,
+                        DATE_NOT_AVAILABLE, NAME_NOT_AVAILABLE)
 from api.user_helpers import update_total
 
 
@@ -70,6 +70,6 @@ def validate_expense(expense):
 
     username = expense.get("username")
     if username is None:
-        return False, USERNAME_NOT_AVAILABLE
+        return False, NAME_NOT_AVAILABLE
 
     return True, SUCCESSFUL_VALIDATION_MESSAGE

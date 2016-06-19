@@ -1,8 +1,7 @@
 # coding=utf-8
 #
 
-from bot.flat.api_actions import get_users_from_api_endpoint
-
+from bot.flat.api_actions import get_all_users_from_api_endpoint
 
 class Member(object):
 
@@ -17,6 +16,6 @@ class Member(object):
         }
 
 
-def get_members(home):
-    user_list = get_users_from_api_endpoint(home)
+def get_members(home_bot_cfg):
+    user_list = get_all_users_from_api_endpoint(home_bot_cfg)
     return [Member(user["username"], user["total"]).to_dict() for user in user_list]
