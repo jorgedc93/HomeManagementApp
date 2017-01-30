@@ -22,5 +22,5 @@ def update_total(home, amount, chat_id):
 
 
 def get_users_from_api_endpoint(home):
-    response = session.get(home.endpoint)
+    response = session.get(ENDPOINT)
     return response.json()['data']

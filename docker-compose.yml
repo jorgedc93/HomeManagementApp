@@ -1,19 +1,21 @@
 version: '2'
 services:
-#  mongodb:
-#    image: mongo
-#    volumes:
-#      - /data/db:/data/db
-#    ports:
-#      - "27017:27017"
+  mongodb:
+    build:
+      dockerfile: Dockerfile
+      context: mongo
+    volumes:
+      - /data/db:/data/db
+    ports:
+      - "27017:27017"
   api:
     build:
       dockerfile: Dockerfile
       context: api
     ports:
      - "5000:5000"
-#    depends_on:
-#     - mongodb
+    depends_on:
+     - mongodb
   bot:
     build:
       dockerfile: Dockerfile
