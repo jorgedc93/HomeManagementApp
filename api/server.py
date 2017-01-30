@@ -2,11 +2,16 @@
 
 from flask import request, jsonify
 
-from api.config import app, URL_BASE
-from api.exceptions import APIError
-from api.expenses_helpers import (get_expense_list, create_new_expense, get_single_expense, update_expense,
-                                  delete_expense)
-from api.user_helpers import get_user_list, create_new_user, get_single_user, delete_user, update_total
+from config import app, URL_BASE
+from exceptions import APIError
+from expenses_helpers import (
+    get_expense_list,
+    create_new_expense,
+    get_single_expense,
+    update_expense,
+    delete_expense
+)
+from user_helpers import get_user_list, create_new_user, get_single_user, delete_user, update_total
 
 
 @app.route(URL_BASE + 'users/', methods=['GET', 'POST'])

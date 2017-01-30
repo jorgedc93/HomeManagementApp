@@ -1,15 +1,18 @@
 # coding=utf-8
 #
+import logging
 import telepot
 
-from bot.flat.members import get_members
-from bot.flat.api_actions import update_total
+from flat.members import get_members
+from flat.api_actions import update_total
 
 COMMAND_PUT = 'put'
 COMMAND_LIST = 'list'
 COMMAND_HELP = 'help'
 
 ALLOWED_COMMANDS = [COMMAND_PUT, COMMAND_LIST, COMMAND_HELP]
+
+logger = logging.getLogger(__name__)
 
 
 def check_text_for_command_and_execute(home, message):
@@ -30,7 +33,7 @@ def check_text_for_command_and_execute(home, message):
         if command == COMMAND_HELP:
             show_help_message(home, chat_id)
     except Exception as e:
-        print(e)
+        logger.error(e)
         home.bot.sendMessage(chat_id, "Sorry, I could not understand your command")
 
 

@@ -4,4 +4,4 @@
 .sass-cache
 .idea/
 .coverage
-bot/flat/config.py
+/bot/flat/config.py

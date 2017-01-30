@@ -1,0 +1,22 @@
+version: '2'
+services:
+#  mongodb:
+#    image: mongo
+#    volumes:
+#      - /data/db:/data/db
+#    ports:
+#      - "27017:27017"
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: api
+    ports:
+     - "5000:5000"
+#    depends_on:
+#     - mongodb
+  bot:
+    build:
+      dockerfile: Dockerfile
+      context: bot
+    depends_on:
+     - api

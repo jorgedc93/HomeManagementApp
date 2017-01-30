@@ -3,8 +3,8 @@ import unittest
 from unittest.mock import patch
 
 from api import expenses_helpers
-from api.config import app
-from api.test_utils import generate_random_expenses
+from config import app
+from test_utils import generate_random_expenses
 
 
 @patch("api.expenses_helpers.mongo")

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from bson.objectid import ObjectId
 
-from api.config import (mongo, SUCCESSFUL_VALIDATION_MESSAGE, USERNAME_NOT_AVAILABLE, AMOUNT_NOT_AVAILABLE,
-                        DATE_NOT_AVAILABLE)
-from api.user_helpers import update_total
+from config import (mongo, SUCCESSFUL_VALIDATION_MESSAGE, USERNAME_NOT_AVAILABLE, AMOUNT_NOT_AVAILABLE,
+                    DATE_NOT_AVAILABLE)
+from user_helpers import update_total
 
 
 def get_expense_list():

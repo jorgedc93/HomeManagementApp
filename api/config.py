@@ -5,7 +5,8 @@ from flask_pymongo import PyMongo
 
 app = Flask("HomeManagementApp")
 app.config["MONGO_DBNAME"] = "home_management_db"
-mongo = PyMongo(app, config_prefix='MONGO')
+app.config["MONGO_CONNECT"] = False
+mongo = PyMongo(app)
 
 URL_BASE = '/api/v1/'
 

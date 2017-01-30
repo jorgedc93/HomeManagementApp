@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from api.config import (mongo, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
+from config import (mongo, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
                         USER_ALREADY_EXISTS)
 
 

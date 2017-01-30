@@ -1,13 +1,15 @@
 #!/usr/bin/env python3.5
 # coding=utf-8
 #
-
+import logging
 import telepot
 import time
 
-from bot.flat.home_bot import HomeBot
-from bot.flat.config import provenca56
-from bot.flat.react import check_text_for_command_and_execute, display_status
+from flat.config import provenca56
+from flat.home_bot import HomeBot
+from flat.react import check_text_for_command_and_execute
+
+logger = logging.getLogger(__name__)
 
 
 def authorised(content_type, chat_id):
@@ -17,7 +19,7 @@ def authorised(content_type, chat_id):
 def run():
     home = HomeBot()
     home.bot.message_loop(react_on_message)
-    print("Bot is running...")
+    logger.info("Bot is running...")
 
 
 def react_on_message(message):

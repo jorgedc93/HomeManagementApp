@@ -5,9 +5,13 @@ import unittest
 from unittest.mock import patch
 
 from api import user_helpers
-from api.config import (app, SUCCESSFUL_VALIDATION_MESSAGE, TOTAL_NOT_AVAILABLE, USERNAME_NOT_AVAILABLE,
-                        USER_ALREADY_EXISTS)
-from api.test_utils import generate_random_user, generate_random_users
+from config import (
+    app,
+    SUCCESSFUL_VALIDATION_MESSAGE,
+    TOTAL_NOT_AVAILABLE,
+    USERNAME_NOT_AVAILABLE,
+    USER_ALREADY_EXISTS)
+from test_utils import generate_random_user, generate_random_users
 
 
 @patch("api.user_helpers.mongo")

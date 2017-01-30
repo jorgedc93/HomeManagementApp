@@ -1,5 +1,5 @@
 from flask import jsonify
-from api.config import app
+from config import app
 
 
 class APIError(Exception):

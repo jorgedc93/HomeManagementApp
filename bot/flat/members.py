@@ -1,7 +1,7 @@
 # coding=utf-8
 #
 
-from bot.flat.api_actions import get_users_from_api_endpoint
+from flat.api_actions import get_users_from_api_endpoint
 
 
 class Member(object):
